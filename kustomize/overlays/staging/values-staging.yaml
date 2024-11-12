@@ -1,0 +1,55 @@
+# PostgreSQL configuration for Staging environment
+postgres:
+  replicaCount: 1
+  image:
+    repository: postgres
+    tag: "13"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 5432
+  env:
+    POSTGRES_USER: "postgres"
+    POSTGRES_PASSWORD: "password"
+    POSTGRES_DB: "people"
+
+# Backend configuration for Staging environment
+backend:
+  replicaCount: 1
+  image:
+    repository: indhura/backend-image
+    tag: "staging-latest"  # Tag for staging environment
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 3000
+    targetPort: 3000
+  env:
+    PGUSER: "postgres"
+    PGPASSWORD: "password"
+    PGDATABASE: "people"
+    PGHOST: "myapp-postgres-service"
+    PGPORT: "5432"
+
+# Frontend configuration for Staging environment
+frontend:
+  replicaCount: 1
+  image:
+    repository: indhura/frontend-image
+    tag: "staging-latest"  # Tag for staging environment
+    pullPolicy: IfNotPresent
+  service:
+    type: NodePort
+    port: 80
+    targetPort: 80
+    nodePort: 30005  # Can differ from dev if needed
+  labels:
+    version: "2"
+
+# Ingress configuration for Staging environment (could be enabled for staging)
+ingress:
+  enabled: true  # Assuming you might want to enable ingress in staging
+  hosts:
+    - host: myapp.staging.example.com
+      paths:
+        - /

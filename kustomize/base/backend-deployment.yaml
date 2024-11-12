@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-backend
+  labels:
+    app: myapp # Consistent app label for the entire deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp # Matches selector.matchLabels for consistency
+    spec:
+      containers:
+      - name: node-backend
+        image: indhura/backend-image
+        ports:
+        - containerPort: 3000
+        env:
+        - name: PGUSER
+          value: "postgres"
+        - name: PGPASSWORD
+          value: "password"
+        - name: PGDATABASE
+          value: "people"
+        - name: PGHOST
+          value: "myapp-postgres-service"
+        - name: PGPORT
+          value: "5432"
+

@@ -1,0 +1,51 @@
+# PostgreSQL configuration
+postgres:
+  replicaCount: 1
+  image:
+    repository: postgres
+    tag: "13"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 5432
+  env:
+    POSTGRES_USER: "postgres"
+    POSTGRES_PASSWORD: "password"
+    POSTGRES_DB: "people"
+
+# Backend configuration
+backend:
+  replicaCount: 1
+  image:
+    repository: indhura/backend-image
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 3000
+    targetPort: 3000
+  env:
+    PGUSER: "postgres"
+    PGPASSWORD: "password"
+    PGDATABASE: "people"
+    PGHOST: "myapp-postgres-service"
+    PGPORT: "5432"
+
+# Frontend configuration  
+frontend:
+  replicaCount: 1
+  image:
+    repository: indhura/frontend-image
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: NodePort
+    port: 80
+    targetPort: 80
+    nodePort: 30004
+  labels:
+    version: "2"
+
+# Ingress configuration (if needed)
+ingress:
+  enabled: false

@@ -1,0 +1,31 @@
+name: CD Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select environment to deploy (dev/staging)'
+        required: true
+        default: 'dev'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Deploy to Dev
+    - name: Deploy to Dev
+      if: ${{ github.event.inputs.environment == 'dev' }}
+      run: |
+        echo "Deploying to Dev environment..."
+        helm upgrade --install myapp ./myapp -f ./kustomize/overlays/dev/values-dev.yaml --namespace dev
+
+    # Deploy to Staging
+    - name: Deploy to Staging
+      if: ${{ github.event.inputs.environment == 'staging' }}
+      run: |
+        echo "Deploying to Staging environment..."
+        helm upgrade --install myapp ./myapp -f ./kustomize/overlays/staging/values-staging.yaml --namespace staging
