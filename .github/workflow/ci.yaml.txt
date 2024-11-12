@@ -13,7 +13,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
     - name: Checkout code
@@ -32,29 +32,29 @@ jobs:
     - name: Build and push backend image for Dev
       if: ${{ github.event.inputs.environment == 'dev' }}
       run: |
-        docker build -t indhura/backend-image:dev-latest ./backend
-        docker push indhura/backend-image:dev-latest
+        docker build -t vijay7823/backend-image:dev-latest ./backend
+        docker push vijay7823/backend-image:dev-latest
 
     # Build and push backend image for staging
     - name: Build and push backend image for Staging
       if: ${{ github.event.inputs.environment == 'staging' }}
       run: |
-        docker build -t indhura/backend-image:staging-latest ./backend
-        docker push indhura/backend-image:staging-latest
+        docker build -t vijay7823/backend-image:staging-latest ./backend
+        docker push vijay7823/backend-image:staging-latest
 
     # Build and push frontend image for dev
     - name: Build and push frontend image for Dev
       if: ${{ github.event.inputs.environment == 'dev' }}
       run: |
-        docker build -t indhura/frontend-image:dev-latest ./frontend
-        docker push indhura/frontend-image:dev-latest
+        docker build -t vijay7823/frontend-image:dev-latest ./frontend
+        docker push vijay7823/frontend-image:dev-latest
 
     # Build and push frontend image for staging
     - name: Build and push frontend image for Staging
       if: ${{ github.event.inputs.environment == 'staging' }}
       run: |
-        docker build -t indhura/frontend-image:staging-latest ./frontend
-        docker push indhura/frontend-image:staging-latest
+        docker build -t vijay7823/frontend-image:staging-latest ./frontend
+        docker push vijay7823/frontend-image:staging-latest
 
     # Helm deploy to Dev
     - name: Helm deploy to Dev
