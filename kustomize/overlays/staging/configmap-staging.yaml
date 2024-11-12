@@ -9,4 +9,8 @@ data:
   VUE_APP_API_URL: "http://myapp-staging-backend-service:3000"
   POSTGRES_DB: "mydatabase"
   API_URL: "http://myapp-staging-backend-service:3000"
+  POSTGRES_USER: "postgres"
+  POSTGRES_PASSWORD: "password"
+  POSTGRES_DB: "people"
+  # Add this line
   # Add this key with the appropriate value

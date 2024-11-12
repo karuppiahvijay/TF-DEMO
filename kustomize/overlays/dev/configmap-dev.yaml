@@ -4,9 +4,13 @@ metadata:
   name: myapp-config
   namespace: dev
 data:
-  DATABASE_URL: "postgres://postgres:password@myapp-dev-postgres-service:5432/people"
+  DATABASE_URL: "postgres://postgres:password@myapp-postgres-service:5432/people"
   NODE_ENV: "development"
-  VUE_APP_API_URL: "http://myapp-dev-backend-service:3000"
+  VUE_APP_API_URL: "http://myapp-backend-service:3000"
   POSTGRES_DB: "mydatabase"
-  API_URL: "http://myapp-dev-backend-service:3000" 
+  API_URL: "http://myapp-backend-service:3000" 
+  POSTGRES_USER: "postgres"
+  POSTGRES_PASSWORD: "password"
+  POSTGRES_DB: "people"
+  # Add this line
   # Add this key with the appropriate value

@@ -17,7 +17,7 @@ postgres:
 backend:
   replicaCount: 1
   image:
-    repository: indhura/backend-image
+    repository: vijay7823/backend-image
     tag: "dev-latest"  # Tag for dev environment
     pullPolicy: IfNotPresent
   service:
@@ -35,7 +35,7 @@ backend:
 frontend:
   replicaCount: 1
   image:
-    repository: indhura/frontend-image
+    repository: vijay7823/frontend-image
     tag: "dev-latest"  # Tag for dev environment
     pullPolicy: IfNotPresent
   service:
