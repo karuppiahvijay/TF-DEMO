@@ -1,31 +1,41 @@
 name: CD Pipeline
 
 on:
+  workflow_run:
+    workflows: [ "CI" ]
+    types:
+      - completed
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Select environment to deploy (dev/staging)'
+        description: 'Environment to deploy to (dev or staging)'
         required: true
-        default: 'dev'
+        default: dev
 
 jobs:
   deploy:
     runs-on: self-hosted
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    # Deploy to Dev
-    - name: Deploy to Dev
-      if: ${{ github.event.inputs.environment == 'dev' }}
-      run: |
-        echo "Deploying to Dev environment..."
-        helm upgrade --install myapp ./myapp -f ./kustomize/overlays/dev/values-dev.yaml --namespace dev
+      # Set environment variable based on event
+      - name: Set Deployment Environment
+        if: ${{ github.event_name == 'workflow_run' }}
+        run: |
+          echo "environment=dev" >> $GITHUB_ENV
 
-    # Deploy to Staging
-    - name: Deploy to Staging
-      if: ${{ github.event.inputs.environment == 'staging' }}
-      run: |
-        echo "Deploying to Staging environment..."
-        helm upgrade --install myapp ./myapp -f ./kustomize/overlays/staging/values-staging.yaml --namespace staging
+      # Deploy to Dev
+      - name: Deploy to Dev
+        if: ${{ (github.event.inputs.environment || env.environment) == 'dev' }}
+        run: |
+          echo "Deploying to Dev environment..."
+          helm upgrade --install myapp ./myapp -f ./kustomize/overlays/dev/values-dev.yaml --namespace dev
+
+      # Deploy to Staging
+      - name: Deploy to Staging
+        if: ${{ (github.event.inputs.environment || env.environment) == 'staging' }}
+        run: |
+          echo "Deploying to Staging environment..."
+          helm upgrade --install myapp ./myapp -f ./kustomize/overlays/staging/values-staging.yaml --namespace staging
